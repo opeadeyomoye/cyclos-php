@@ -2,16 +2,28 @@
 
 namespace Cyclos;
 
+use ArrayObject;
+
 class Cyclos
 {
-    public function getJar()
+    public function getJar(ArrayObject $object)
     {
-        if ($this->james != $this->kate) {
-            if (5 >= $this->kate) {
-                return false;
-            }
-        }
-        return array('key' => 'value');
+        $data = [
+            'principal' => 'james',
+            'amount' => 'type',
+            'type' => 'account.PaymentType'
+        ];
+        $auth = Cyclos\Api::getPayment();
+        $payment = Cyclos\Model::getDataForPayment();
+
+        $payment->set($data);
+
+        $auth->performPayment('self', $payment)
+            ->withHeader('this')
+            ->expect(new Model())
+            ->send();
+        
+        return true;
     }
 }
  /**
