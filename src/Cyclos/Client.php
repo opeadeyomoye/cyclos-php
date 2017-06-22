@@ -2,7 +2,13 @@
 
 namespace Cyclos;
 
-
+/**
+ * Finish setting up methods here
+ * See that ClientInterface has everything we need here
+ * Implement base client and Httpful client
+ * 
+ * Go on to implement APIs
+ */
 class Client
 {
 
@@ -50,14 +56,71 @@ class Client
     }
 
 
-    public function send()
+    /**
+     * Add an operation description for the request.
+     *
+     * @param Operation $operation
+     * @return $this
+     */
+    public function setOperation(Operation $operation)
     {
-
+        $this->_httpClient->setOperation($operation);
+        return $this;
     }
 
 
-    public function _parseResponse()
+    /**
+     * Set the model to expect on successful response.
+     *
+     * @param string $model
+     * @return $this
+     */
+    public function expect($model)
     {
-        
+        $this->_httpClient->expect($model);
+        return $this;
+    }
+
+
+    /**
+     * Add a payload to the request.
+     *
+     * @param [type] $body
+     * @return $this
+     */
+    public function withBody($body)
+    {
+        $this->_httpClient->withBody();
+        return $this;
+    }
+
+
+    /**
+     * Add an HTTP header to the request.
+     *
+     * @param string $header
+     * @return $this
+     */
+    public function withHeader($header)
+    {
+        $this->_httpClient->withHeader($header);
+        return $this;
+    }
+
+
+    /**
+     * Send the request, attempt to fashion the expected response.
+     *
+     * @return void
+     */
+    public function send()
+    {
+        return $this->_httpClient->send();
+    }
+
+    // Alias of $this->send();
+    public function now()
+    {
+        return $this->send();
     }
 }

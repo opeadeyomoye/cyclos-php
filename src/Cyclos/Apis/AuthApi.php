@@ -14,8 +14,8 @@ class AuthApi
         $method = 'get';
         $query = http_build_query($parameters);
 
-        return $this->client
-            ->setEndpoint($endpoint)
+        return $this->getClient()
+            ->setOperation($endpoint)
             ->setQuery($query)
             ->expect(['model' => 'Auth']);
     }
