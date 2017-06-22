@@ -10,7 +10,7 @@ use Cyclos\Client as CyclosClient;
 trait ClientAwareTrait
 {
     /**
-     * Undocumented function
+     * Get an instance of Cyclos\Client.
      *
      * @param string $client
      * @return CyclosClient

@@ -10,6 +10,12 @@ class AuthApi
 
     public function login($parameters = [])
     {
+        /*
+         | Set endpoint
+         | Add default query params
+         | Add default headers
+         | 
+         */
         $endpoint = '/auth/session';
         $method = 'get';
         $query = http_build_query($parameters);
