@@ -16,7 +16,7 @@ interface ClientInterface
      * @return ClientInterface
      */
     public function setOperation(Operation $operation);
-    
+
     /**
      * Add an HTTP header to the current request.
      * 

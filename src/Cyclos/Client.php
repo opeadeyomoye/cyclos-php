@@ -39,7 +39,7 @@ class Client
 
         $clientClass = "\Cyclos\Http\Clients\\" . ucfirst($client);
         if (!class_exists($clientClass)) { // @todo: no check for ClientInterface implementation
-            throw new \Exception("");
+            throw new \Exception(""); // @todo: uhh... the exception?
         }
         $this->_httpClient = new $clientClass;
     }
@@ -122,5 +122,14 @@ class Client
     public function now()
     {
         return $this->send();
+    }
+
+
+    public function __call($method, $args)
+    {
+        if (method_exists($this->_httpClient, $method)) {
+            return call_user_func_array([$this->_httpClient, $method], $args);
+        }
+        return false;
     }
 }

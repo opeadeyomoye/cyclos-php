@@ -95,4 +95,9 @@ class Operation
         $this->setHeaders($headers);
         return $this;
     }
+
+    public function getUrl()
+    {
+        
+    }
 }
