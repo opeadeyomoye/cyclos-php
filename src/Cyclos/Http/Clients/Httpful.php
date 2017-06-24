@@ -8,6 +8,8 @@ use Httpful\Request;
 
 class Httpful extends BaseClient
 {
+    const USER_AGENT_HEADER = ['User-Agent' => 'Httpful Cyclos PHP Client'];
+
     /**
      * @var \Httpful\Request An Httpful request object
      */
@@ -26,17 +28,16 @@ class Httpful extends BaseClient
         
     }
 
-    public function setOperation(Operation $operation)
-    {
-        $this->operation = $operation;
-        $this->tryInitRequest();
-    }
-
-    public function tryInitRequest($force = false)
+    /**
+     * Tries to create a new Httpful request object.
+     *
+     * @return void
+     */
+    public function initRequest()
     {
         $method = $this->operation->getMethod();
         
-        if (!($method) && $force) {
+        if (!$method) {
             // throw
         }
         $method = strtolower($method);
@@ -44,15 +45,36 @@ class Httpful extends BaseClient
         if (!method_exists(Request::class, $method)) {
             // throw
         }
-
         $this->request = Request::$method($this->operation->getUrl());
-        
+    }
+
+
+    /**
+     * Sets up our Httpful request object with operation data and whatnot.
+     *
+     * @return void
+     */
+    public function setupRequest()
+    {
+        // set up headers
+        $headers = $this->operation->getHeaders();
+        is_array($headers) || $headers = [];
+        $headers = array_merge($headers, self::USER_AGENT_HEADER);
+
+        $this->request->addHeaders($headers);
+
+        // set up body. For now...
+        if ($this->body) {
+            $body = $this->body;
+            (is_string($body) && json_decode($body)) || $body = json_encode($body);
+            $this->request->body($this->body)->expects('json');
+        }
+
     }
 
     public function send()
     {
-        
-
-        $method = $this->operation->getMethod();
+        $this->initRequest();
+        $this->setupRequest();
     }
 }

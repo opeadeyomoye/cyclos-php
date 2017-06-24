@@ -25,7 +25,7 @@ class Operation
         'path' => '',
         'query' => '',
         'method' => '',
-        'headers' => []
+        'headers' => [] // name-value array of headers
     ];
 
     public function __construct($data = [])
@@ -88,10 +88,10 @@ class Operation
         return $this->offsetGet('headers');
     }
 
-    public function addHeader($header)
+    public function addHeader($name, $value)
     {
         $headers = $this->offsetGet('headers');
-        $headers[] = $header;
+        $headers[$name] = $value;
         $this->setHeaders($headers);
         return $this;
     }
