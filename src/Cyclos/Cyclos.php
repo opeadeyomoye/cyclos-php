@@ -2,7 +2,7 @@
 
 namespace Cyclos;
 
-use ArrayObject;
+use \ArrayObject;
 
 class Cyclos
 {

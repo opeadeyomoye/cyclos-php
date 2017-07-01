@@ -2,6 +2,8 @@
 
 namespace Cyclos;
 
+use Cyclos\Configuration\Configuration;
+
 /**
  * Finish setting up methods here
  * See that ClientInterface has everything we need here
@@ -53,6 +55,18 @@ class Client
     public function availableClients()
     {
         return [self::HTTPFUL];
+    }
+
+
+    /**
+     * Add configuration for the current request.
+     *
+     * @param Configuration $config
+     * @return $this
+     */
+    public function setConfig(Configuration $config)
+    {
+        return $this;
     }
 
 
