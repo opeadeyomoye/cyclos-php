@@ -1,5 +1,11 @@
 {
     "require": {
         "nategood/httpful": "*"
+    },
+    "autoload": {
+        "psr-4": {"Cyclos\\": "src/Cyclos/"}
+    },
+    "suggest": {
+        "vlucas/phpdotenv": "Needed to use Cyclos API access config stored in your local .env file."
     }
 }
