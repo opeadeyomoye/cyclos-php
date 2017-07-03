@@ -47,6 +47,8 @@ class Configuration
     protected static $sessionToken = '';
     protected static $accessClient = '';
 
+    private static $_globalConfig;
+
     /**
      * Class constructor.
      * 
@@ -94,6 +96,44 @@ class Configuration
         $dotenv->required(static::environmentVariableNames());
         $dotenv->load();
         return (new self([]))->loadEnv();
+    }
+
+
+    /**
+     * Sets a global(ish) configuration object.
+     *
+     * @param Configuration $config
+     * @return void
+     */
+    private static function setGlobalConfig(Configuration $config)
+    {
+        static::$_globalConfig = $config;
+    }
+
+
+    /**
+     * Get a clone of the the global(ish) configuration object.
+     * 
+     * Returns a new instance of the configuration class containing the (hardcoded)
+     * defaults if no global config object has been set.
+     *
+     * @return Configuration
+     */
+    public static function getGlobalConfig()
+    {
+        return (static::$_globalConfig) ? clone(static::$_globalConfig) : self::get();
+    }
+
+
+    /**
+     * Make (a clone of) $this the global configuration object. 
+     *
+     * @return Configuration
+     */
+    public function makeItGlobal()
+    {
+        static::setGlobalConfig(clone($this));
+        return $this;
     }
 
     /**
