@@ -42,6 +42,6 @@ trait ArrayAccessTrait
     
     public function patchIn($data)
     {
-        return array_merge($this->container, $data);
+        return $this->container = array_merge($this->container, $data);
     }
 }

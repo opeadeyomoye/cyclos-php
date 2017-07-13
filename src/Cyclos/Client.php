@@ -62,10 +62,11 @@ class Client
      * Add configuration for the current request.
      *
      * @param Configuration $config
-     * @return $this
+     * @return Client
      */
     public function setConfig(Configuration $config)
     {
+        $this->_httpClient->getOperation()->setConfig($config);
         return $this;
     }
 
@@ -74,7 +75,7 @@ class Client
      * Add an operation description for the request.
      *
      * @param Operation $operation
-     * @return $this
+     * @return Client
      */
     public function setOperation(Operation $operation)
     {
@@ -87,7 +88,7 @@ class Client
      * Set the model to expect on successful response.
      *
      * @param string $model
-     * @return $this
+     * @return Client
      */
     public function expect($model)
     {
@@ -100,7 +101,7 @@ class Client
      * Add a payload to the request.
      *
      * @param [type] $body
-     * @return $this
+     * @return Client
      */
     public function withBody($body)
     {

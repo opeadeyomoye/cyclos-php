@@ -13,6 +13,8 @@ namespace Cyclos\Configuration;
  * @property string $password
  * @property string $sessionToken
  * @property string $accessClient
+ * 
+ * @todo Allow devs set prefered http client in zis config class?
  */
 class Configuration
 {
@@ -58,6 +60,7 @@ class Configuration
      */
     private function __construct($config = [])
     {
+        // @todo: try to set these guys publicly to remote the need for getters?
         foreach ($config as $property => $value) {
             $this->{$property} = $value;
         }
@@ -176,11 +179,16 @@ class Configuration
                     ->setPassword($password);
     }
 
-    // setters...
+    // setters and getters...
     public function setRootUrl($rootUrl)
     {
         $this->rootUrl = $rootUrl;
         return $this;
+    }
+
+    public function getRootUrl()
+    {
+        return $this->rootUrl;
     }
 
     public function setUsername($username)
@@ -189,10 +197,20 @@ class Configuration
         return $this;
     }
 
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
     public function setPassword($password)
     {
         $this->password = $password;
         return $this;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     public function setSessionToken($sessionToken)
@@ -201,9 +219,19 @@ class Configuration
         return $this;
     }
 
+    public function getSessionToken()
+    {
+        return $this->sessionToken;
+    }
+
     public function setAccessClient($accessClient)
     {
         $this->accessClient = $accessClient;
         return $this;
+    }
+
+    public function getAccessClient()
+    {
+        return $this->accessClient;
     }
 }

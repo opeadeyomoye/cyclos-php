@@ -4,9 +4,11 @@ namespace Cyclos\Apis;
 
 use Cyclos\Http\ClientAwareTrait;
 use Cyclos\OperationAwareTrait;
+use Cyclos\Configuration\ConfigAwareTrait;
 
 class AuthApi
 {
+    use ConfigAwareTrait;
     use ClientAwareTrait;
     use OperationAwareTrait;
 
@@ -17,16 +19,17 @@ class AuthApi
          | Add default query params
          | Add default headers
          */
-        // @todo Abstract creating operations?
-        
 
-        $endpoint = '/auth/session';
-        $method = 'get';
-        $query = http_build_query($parameters);
+        $path = '/auth/session';
+        $query = [];
+        $method = 'post';
+        $headers = ['Content-type' => 'application/json'];
+
+        $operation = $this->makeOperation(compact(['path', 'query', 'method', 'headers']));
+        $operation->setConfig($this->getGlobalConfig());
 
         return $this->getClient()
-            ->setOperation($endpoint)
-            ->setQuery($query)
+            ->setOperation($operation)
             ->expect(['model' => 'Auth']);
     }
 

@@ -3,6 +3,7 @@
 namespace Cyclos;
 
 use Cyclos\ArrayAccessTrait;
+use Cyclos\Configuration\Configuration;
 
 /**
  * Encapsulates details about a request to a specific endpoint
@@ -21,15 +22,17 @@ class Operation
     const METHOD_POST = 'post';
     const METHOD_DELETE = 'delete';
 
-    protected $container = [
+    protected $properties = [
         'path' => '',
-        'query' => '',
+        'query' => [],
         'method' => '',
-        'headers' => [] // name-value array of headers
+        'headers' => [], // name-value array of headers
+        'configuration' => null
     ];
 
     public function __construct($data = [])
     {
+        $this->container = array_merge($this->container, $this->properties);
         if (!empty($data)) {
             $this->patchIn($data);
         }
@@ -52,6 +55,11 @@ class Operation
         return $this;
     }
 
+    /**
+     * Return an array of preset query parameters and values.
+     *
+     * @return array
+     */
     public function getQuery()
     {
         return $this->offsetGet('query');
@@ -88,6 +96,24 @@ class Operation
         return $this->offsetGet('headers');
     }
 
+
+    public function setConfig(Configuration $config)
+    {
+        $this->offsetSet('configuration', $config);
+        return $this;
+    }
+
+
+    /**
+     * Return this operation's config object.
+     *
+     * @return Configuration
+     */
+    public function getConfig()
+    {
+        return $this->offsetGet('configuration');
+    }
+
     public function addHeader($name, $value)
     {
         $headers = $this->offsetGet('headers');
@@ -96,8 +122,38 @@ class Operation
         return $this;
     }
 
+
+    /**
+     * Return the full URL for the current request.
+     *
+     * @return string
+     * 
+     * @throws \Exception If no configuration has been set.
+     */
     public function getUrl()
     {
-        
+        $config = $this->getConfig();
+        if (!($config instanceof Configuration)) {
+            throw new \Exception(
+                "Can't get request URL: No configuration object has been set for the Cyclos request."
+            );
+        }
+        $url = rtrim($config->getRootUrl(), '/api') . '/api';
+        $url .= rtrim($this->getPath(), '/');
+
+        if (!empty($this->getQuery())) {
+            $url .= '?'.$this->getQueryString();
+        }
+        return $url;
+    }
+
+    /**
+     * Get the query string for the current request.
+     *
+     * @return string
+     */
+    public function getQueryString()
+    {
+        return \http_build_query($this->getQuery());
     }
 }

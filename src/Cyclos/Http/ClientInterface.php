@@ -18,6 +18,13 @@ interface ClientInterface
     public function setOperation(Operation $operation);
 
     /**
+     * Get the client's operation object.
+     *
+     * @return Operation
+     */
+    public function getOperation();
+
+    /**
      * Add an HTTP header to the current request.
      * 
      * @param string $header
