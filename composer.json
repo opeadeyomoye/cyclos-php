@@ -3,9 +3,15 @@
         "nategood/httpful": "*"
     },
     "autoload": {
-        "psr-4": {"Cyclos\\": "src/Cyclos/"}
+        "psr-4": {
+            "Cyclos\\": "src/Cyclos/",
+            "Cyclos\\Tests\\": "tests/"
+        }
     },
     "suggest": {
         "vlucas/phpdotenv": "Needed to use Cyclos API access config stored in your local .env file."
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
     }
 }
