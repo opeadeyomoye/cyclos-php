@@ -1,5 +1,20 @@
 {
+    "name": "techequity/cyclos-php",
+    "type": "library",
+    "description": "PHP client library for Cyclos 4.8+",
+    "keywords": ["cyclos","cyclos-4.8", "banking", "e-money"],
+    "homepage": "https://github.com/opeadeyomoye/cyclos-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ope Adeyomoye",
+            "email": "victoradeyomoye",
+            "homepage": "https://twitter.com/victoradeyomoye",
+            "role": "Developer"
+        }
+    ],
     "require": {
+        "php": ">=5.6",
         "nategood/httpful": "*"
     },
     "autoload": {
