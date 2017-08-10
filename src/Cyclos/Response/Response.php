@@ -11,7 +11,8 @@ class Response extends BaseResponse
         if ((is_null($model)) || !(is_string($model))) {
             $model = static::class;
         }
-        
+        // trigger warning if model class was not found..
+
         // if the checks for the selected model class fail...
         return new static($operation, $code, $headers, $body);
     }

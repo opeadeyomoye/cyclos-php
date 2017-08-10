@@ -26,15 +26,16 @@ class Httpful extends BaseClient
                 HTTP client interface for your requests.'
             ); // @todo replace with client-library exception?
         }
-        
     }
 
     /**
      * Tries to create a new Httpful request object.
      *
-     * @return void
+     * @return Httpful
+     * 
+     * @throws \Exception If request method is deemed invalid. Weird reason, huh?
      */
-    public function initRequest()
+    public function createHttpfulRequest()
     {
         $method = $this->operation->getMethod();
         
@@ -47,33 +48,26 @@ class Httpful extends BaseClient
             // throw
         }
         $this->request = Request::$method($this->operation->getUrl());
+        return $this;
     }
 
 
     /**
-     * Sets up our Httpful request object with operation data and whatnot.
+     * Sets up headers for the current request.
      *
-     * @return void
+     * @return Httpful
      */
-    public function setupRequest()
+    public function setHeaders()
     {
-        // set up headers
         $headers = $this->operation->getHeaders();
         is_array($headers) || $headers = [];
         $headers = array_merge($headers, self::USER_AGENT_HEADER);
-
-        // set up body. For now...
-        if ($this->body) {
-            $body = $this->body;
-            (is_string($body) && json_decode($body)) || $body = json_encode($body);
-            $this->request->body($this->body);
-        }
 
         // add authorization header
         $config = $this->operation->getConfig();
 
         if ($config->getAccessClient()) {
-            $headers['Access-Client'] = $config->getAccessClient();
+            $headers['Authorization'] = 'Bearer ' . $config->getAccessClient();
         } elseif ($config->getSessionToken()) {
             $headers['Session-Token'] = $config->getSessionToken();
         } else {
@@ -86,10 +80,37 @@ class Httpful extends BaseClient
                 $headers['Authorization'] = 'Basic ' . base64_encode("{$username}:{$password}");
             }
         }
-
-        // send and model response...?
         $this->request->addHeaders($headers);
         $this->request->expects('json');
+        return $this;
+    }
+
+
+    /**
+     * Adds request body.
+     *
+     * @return Httpful
+     */
+    public function setBody()
+    {
+        // set up body. For now...
+        if ($this->body) {
+            $body = $this->body;
+            (is_string($body) && json_decode($body)) || $body = json_encode($body);
+            $this->request->body($this->body);
+        }
+        return $this;
+    }
+
+
+    /**
+     * Sends our request.
+     *
+     * @return \Httpful\Response
+     */
+    protected function shoot()
+    {
+        return $this->request->send();
     }
 
 
@@ -98,15 +119,11 @@ class Httpful extends BaseClient
      * 
      * Models the response after a specified object, if present.
      *
-     * @return mixed
+     * @return \Cyclos\Response\Response
      */
     public function send()
     {
-        $this->initRequest();
-        $this->setupRequest();
-
-        $response = ($this->request->send());
-
+        $response = $this->createHttpfulRequest()->setHeaders()->setBody()->shoot();
         return $this->makeResponse(
             $this->expectedModel,
             $this->operation,

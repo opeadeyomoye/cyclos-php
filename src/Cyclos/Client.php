@@ -5,11 +5,8 @@ namespace Cyclos;
 use Cyclos\Configuration\Configuration;
 
 /**
- * Finish setting up methods here
- * See that ClientInterface has everything we need here
- * Implement base client and Httpful client
  * 
- * Go on to implement APIs
+ * @todo Add isAllCool() method to quickly send and review request coolness :-)
  */
 class Client
 {
