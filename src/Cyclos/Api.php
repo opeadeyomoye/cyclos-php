@@ -10,6 +10,9 @@ namespace Cyclos;
  */
 class Api
 {
+    /**
+     * @return Apis\AuthApi
+     */
     public function getAuth()
     {
         return new Apis\AuthApi();
