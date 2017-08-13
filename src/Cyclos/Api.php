@@ -11,21 +11,21 @@ namespace Cyclos;
 class Api
 {
     /**
-     * @return Apis\AuthApi
+     * @return \Cyclos\Apis\AuthApi
      */
-    public function getAuth()
+    public static function getAuth()
     {
         return new Apis\AuthApi();
     }
 
 
-    public function getPayments()
+    public static function getPayments()
     {
         
     }
 
 
-    public function getUsers()
+    public static function getUsers()
     {
 
     }

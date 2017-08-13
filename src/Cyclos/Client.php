@@ -123,7 +123,7 @@ class Client
     /**
      * Send the request, attempt to fashion the expected response.
      *
-     * @return void
+     * @return \Cyclos\Response\Response
      */
     public function send()
     {
