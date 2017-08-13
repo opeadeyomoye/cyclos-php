@@ -4,10 +4,7 @@ namespace Cyclos;
 
 use Cyclos\Configuration\Configuration;
 
-/**
- * 
- * @todo Add isAllCool() method to quickly send and review request coolness :-)
- */
+
 class Client
 {
 
@@ -128,6 +125,24 @@ class Client
     public function send()
     {
         return $this->_httpClient->send();
+    }
+
+    /**
+     * Quickly send and review request coolness.
+     * 
+     * Sends the current request, returns true if the
+     * response has no errors.
+     *
+     * @return boolean
+     */
+    public function isAllCool()
+    {
+        // try-catch?
+        $response = $this->send();
+        if ($response instanceof \Cyclos\Response\Response) {
+            return $response->isCool();
+        }
+        return false;
     }
 
     // Alias of $this->send();

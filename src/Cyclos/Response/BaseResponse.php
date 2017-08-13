@@ -56,6 +56,11 @@ abstract class BaseResponse implements ResponseTypeInterface
         return !($this->hasErrors());
     }
 
+    /**
+     * Alias to $this->hasNoErrors()
+     *
+     * @return boolean
+     */
     public function isCool()
     {
         return $this->hasNoErrors();
