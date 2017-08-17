@@ -18,6 +18,13 @@ class Api
         return new Apis\AuthApi();
     }
 
+    /**
+     * @return \Cyclos\Apis\AccountsApi
+     */
+    public static function getAccounts()
+    {
+        return new Apis\AccountsApi;
+    }
 
     public static function getPayments()
     {
