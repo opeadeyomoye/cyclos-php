@@ -87,4 +87,9 @@ abstract class BaseResponse implements ResponseTypeInterface
     {
         return clone $this->operation;
     }
+
+    public function getRootUrl()
+    {
+        return $this->getOperation()->getConfig()->getRootUrl();
+    }
 }

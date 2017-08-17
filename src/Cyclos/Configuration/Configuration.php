@@ -43,11 +43,11 @@ class Configuration
     */
 
     // default configuration
-    protected static $rootUrl   = 'https://demo.cyclos.org';
-    protected static $username  = 'demo';
-    protected static $password  = '1234';
-    protected static $sessionToken = '';
-    protected static $accessClient = '';
+    protected $rootUrl   = 'https://demo.cyclos.org';
+    protected $username  = 'demo';
+    protected $password  = '1234';
+    protected $sessionToken = '';
+    protected $accessClient = '';
 
     private static $_globalConfig;
 
@@ -75,6 +75,7 @@ class Configuration
     public static function get()
     {
         $defaultConfig = get_class_vars(static::class);
+        unset($defaultConfig['_globalConfig']);
         return new self($defaultConfig);
     }
 
