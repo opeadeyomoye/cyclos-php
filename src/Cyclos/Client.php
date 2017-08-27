@@ -25,7 +25,7 @@ class Client
      *
      * @param string $client String representation of a valid http client.
      * 
-     * @throws Exception If client class was not found.
+     * @throws \Exception If client class was not found.
      */
     public function __construct($client = null)
     {

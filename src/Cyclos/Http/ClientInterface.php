@@ -27,11 +27,12 @@ interface ClientInterface
     /**
      * Add an HTTP header to the current request.
      * 
-     * @param string $header
+     * @param string|array $header
+     * @param string|null  $value
      * 
      * @return ClientInterface
      */
-    public function withHeader($header);
+    public function withHeader($header, $value = null);
 
     /**
      * Specify the model to base the (successful) response on.

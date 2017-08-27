@@ -5,7 +5,13 @@ namespace Cyclos\Http\Clients;
 use Cyclos\Operation;
 use Httpful\Request;
 
-
+/**
+ * Class Httpful
+ *
+ * Default HTTP client using https://github.com/nategood/httpful .
+ *
+ * @package Cyclos\Http\Clients
+ */
 class Httpful extends BaseClient
 {
     const USER_AGENT_HEADER = ['User-Agent' => 'Httpful Cyclos PHP Client'];
@@ -24,7 +30,7 @@ class Httpful extends BaseClient
             throw new \BadMethodCallException(
                 'Could not find Httpful client library. Please install it, or use another
                 HTTP client interface for your requests.'
-            ); // @todo replace with client-library exception?
+            );
         }
     }
 
@@ -33,19 +39,14 @@ class Httpful extends BaseClient
      *
      * @return Httpful
      * 
-     * @throws \Exception If request method is deemed invalid. Weird reason, huh?
+     * @throws \HttpRequestMethodException If request method is deemed invalid. Weird reason, huh?
      */
     public function createHttpfulRequest()
     {
-        $method = $this->operation->getMethod();
-        
-        if (!$method) {
-            // throw
-        }
-        $method = strtolower($method);
+        $method = strtolower((string)$this->operation->getMethod());
 
         if (!method_exists(Request::class, $method)) {
-            // throw
+            throw new \HttpRequestMethodException('Invalid HTTP request method "' . $method . '" for Cyclos request.');
         }
         $this->request = Request::$method($this->operation->getUrl());
         return $this;
@@ -54,6 +55,8 @@ class Httpful extends BaseClient
 
     /**
      * Sets up headers for the current request.
+     *
+     * @throws \Exception If login credentials are missing.
      *
      * @return Httpful
      */
@@ -93,7 +96,6 @@ class Httpful extends BaseClient
      */
     public function setBody()
     {
-        // set up body. For now...
         if ($this->body) {
             $body = $this->body;
             (is_string($body) && json_decode($body)) || $body = json_encode($body);
@@ -117,7 +119,7 @@ class Httpful extends BaseClient
     /**
      * Send the current request.
      * 
-     * Models the response after a specified object, if present.
+     * @todo(?): Model the response after a specified object, if present.
      *
      * @return \Cyclos\Response\Response
      */

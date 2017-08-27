@@ -8,7 +8,14 @@ use Cyclos\Operation;
 use Cyclos\OperationAwareTrait;
 use Cyclos\Response\Response;
 
-// @todo be sure to explicity set user agent for requests
+/**
+ * Class BaseClient
+ *
+ * @package Cyclos\Http\Clients
+ *
+ * @todo be sure to explicitly set user-agent for requests
+ * @todo Consider making this class into a trait
+ */
 abstract class BaseClient implements ClientInterface
 {
     use OperationAwareTrait;
@@ -23,12 +30,26 @@ abstract class BaseClient implements ClientInterface
      */
     protected $expectedModel;
 
+
+    /**
+     * Set the current operation.
+     *
+     * @param Operation $operation
+     * @return $this
+     */
     public function setOperation(Operation $operation)
     {
         $this->operation = $operation;
         return $this;
     }
 
+    /**
+     * Set the Cyclos configuration object for
+     * subsequent requests with this client.
+     *
+     * @param Configuration $config
+     * @return $this
+     */
     public function setConfig(Configuration $config)
     {
         $this->operation->setConfig($config);
@@ -39,13 +60,19 @@ abstract class BaseClient implements ClientInterface
      * {@inheritDoc}
      *
      * @param string $header
-     * @return Operation
+     * @return $this
      */
-    public function withHeader($header)
+    public function withHeader($header, $value = null)
     {
-        return $this->operation->addHeader($header);
+        if (is_array($header)) {
+            foreach ($header as $key => $val) {
+                $this->operation->addHeader($key, $val);
+            }
+        } else {
+            $this->operation->addHeader($header, $value);
+        }
+        return $this;
     }
-
 
     /**
      * {@inheritDoc}
@@ -59,7 +86,6 @@ abstract class BaseClient implements ClientInterface
         return $this;
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -72,16 +98,16 @@ abstract class BaseClient implements ClientInterface
         return $this;
     }
 
-
     /**
-     * Undocumented function
+     * Construct a response object.
      *
-     * @param mixed $model
+     * @param mixed     $model
      * @param Operation $operation
-     * @param int $code
-     * @param array $headers
-     * @param stdClass $body
-     * @return void
+     * @param int       $code
+     * @param array     $headers
+     * @param \stdClass $body
+     *
+     * @return Response
      */
     public function makeResponse($model = null, Operation $operation, $code, array $headers, $body)
     {

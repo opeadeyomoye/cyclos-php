@@ -5,7 +5,11 @@ namespace Cyclos\Http;
 use Cyclos\Client as CyclosClient;
 
 /**
+ * Class ClientAwareTrait
+ *
  * Provides a method to get an instance of namespace\ClientInterface.
+ *
+ * @package Cyclos\Http
  */
 trait ClientAwareTrait
 {

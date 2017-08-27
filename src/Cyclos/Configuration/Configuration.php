@@ -4,44 +4,22 @@ namespace Cyclos\Configuration;
 
 /**
  * Configuration class
- * 
+ *
  * Holds and loads (no pun intended) basic info used to access a specific Cyclos instance.
  * The default configuration here allows you to whip up requests to Cyclos' demo platform.
- * 
+ *
  * @property string $rootUrl
  * @property string $username
  * @property string $password
  * @property string $sessionToken
  * @property string $accessClient
- * 
- * @todo Allow devs set prefered http client in zis config class?
+ *
+ * @package Cyclos\Configuration
+ *
+ * @todo Allow devs set preferred http client in zis config class?
  */
 class Configuration
 {
-    /*
-     | In a bid to avoid "global state" for config, here's what we'll try:
-     | 
-     | Have protected, static properties that will hold config.
-     | The protected config can ONLY be modified via a static interface, and the only
-     | real "modification" that can be done is reload the config from the dotenv file,
-     | or reload the default (manually-set) config from wherever that resides.
-     |
-     | Have static methods to reload the manual or dotenv config into a new config object.
-     | This way, we've got global defaults, but dependents use seperate instances, hence we avoid
-     | creating a "recipe for disaster" or all that other bad news associated with global variables.
-     | 
-     | Oh, and we'll probably use an interface for creating config classes. Hmm, we could even
-     | make the constructor private, then we'll provide a static interface for creating new instances
-     | while avoiding the apparently evil singleton instance.
-    */
-
-    /*
-     | One can instantiate and populate config objects
-     | One can setConfig() on Api objects
-     | Api objects set initial config on instantiation
-     | 
-    */
-
     // default configuration
     protected $rootUrl   = 'https://demo.cyclos.org';
     protected $username  = 'demo';
@@ -60,7 +38,7 @@ class Configuration
      */
     private function __construct($config = [])
     {
-        // @todo: try to set these guys publicly to remote the need for getters?
+        // @todo: try to set these guys publicly to remove the need for getters?
         foreach ($config as $property => $value) {
             $this->{$property} = $value;
         }
@@ -75,7 +53,9 @@ class Configuration
     public static function get()
     {
         $defaultConfig = get_class_vars(static::class);
+
         unset($defaultConfig['_globalConfig']);
+
         return new self($defaultConfig);
     }
 
@@ -89,12 +69,17 @@ class Configuration
      * @return Configuration
      * 
      * @see Configuration::environmentVariableNames() For required environment variables.
+     *
+     * @throws \Exception If we can't find Vance's phpdotenv library.
      * @throws \RuntimeException If any of the required environment variables were not found.
      */
     public static function loadFromEnvironment($path, $file = '.env')
     {
         if (!class_exists('\Dotenv\Dotenv')) {
-            // throw
+            throw new \Exception(
+                'The "vlucas/phpdotenv" composer package is required to load environment variables 
+                in ' . __FILE__
+            );
         }
         $dotenv = new \Dotenv\Dotenv($path, $file);
         $dotenv->required(static::environmentVariableNames());
@@ -116,7 +101,7 @@ class Configuration
 
 
     /**
-     * Get a clone of the the global(ish) configuration object.
+     * Get a clone of the global(ish) configuration object.
      * 
      * Returns a new instance of the configuration class containing the (hardcoded)
      * defaults if no global config object has been set.
@@ -128,16 +113,20 @@ class Configuration
         return (static::$_globalConfig) ? clone(static::$_globalConfig) : self::get();
     }
 
-
     /**
-     * Make (a clone of) $this the global configuration object. 
+     * Make (a clone of) $this the global configuration object.
      *
      * @return Configuration
      */
-    public function makeItGlobal()
+    public function globalize()
     {
         static::setGlobalConfig(clone($this));
         return $this;
+    }
+
+    public function makeItGlobal()
+    {
+        return $this->globalize();
     }
 
     /**
@@ -164,7 +153,7 @@ class Configuration
      *
      * @return Configuration
      * 
-     * @throws \RuntimeException If any of of the required environment variables are missing.
+     * @throws \Exception If any of the required environment variables are missing.
      */
     public function loadEnv()
     {
@@ -172,8 +161,11 @@ class Configuration
         $environmentVariables = array_intersect_key($_ENV, array_flip($variableNames));
 
         if (!(array_keys($environmentVariables) === array_values($variableNames))) {
-            // throw. Preferably same thing Dotenv throws
+            throw new \Exception(
+                'Some environment variables required for Cyclos configuration are missing.'
+            );
         }
+
         list($rootUrl, $username, $password) = array_values($environmentVariables);
         return $this->setRootUrl($rootUrl)
                     ->setUsername($username)
