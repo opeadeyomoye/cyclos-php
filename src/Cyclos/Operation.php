@@ -2,14 +2,17 @@
 
 namespace Cyclos;
 
-use Cyclos\ArrayAccessTrait;
+
 use Cyclos\Configuration\Configuration;
 
 /**
- * Encapsulates details about a request to a specific endpoint
- * e.g. endpoint path, request method, default content-type
- * and accepts headers, etc.
- * 
+ * Class Operation
+ *
+ * Encapsulates details about a request to a specific endpoint e.g. endpoint path,
+ * request method, default content-type and accepts headers, etc.
+ *
+ * @package Cyclos
+ *
  * @todo Operation class should function as request class?
  */
 class Operation

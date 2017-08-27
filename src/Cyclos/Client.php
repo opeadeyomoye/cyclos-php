@@ -5,6 +5,11 @@ namespace Cyclos;
 use Cyclos\Configuration\Configuration;
 
 
+/**
+ * Class Client
+ *
+ * @package Cyclos
+ */
 class Client
 {
 
@@ -25,7 +30,7 @@ class Client
      *
      * @param string $client String representation of a valid http client.
      * 
-     * @throws \Exception If client class was not found.
+     * @throws \InvalidArgumentException If client class was not found.
      */
     public function __construct($client = null)
     {
@@ -33,9 +38,11 @@ class Client
             $client = self::HTTPFUL;
         }
 
-        $clientClass = "\Cyclos\Http\Clients\\" . ucfirst($client);
+        $clientClass = '\Cyclos\Http\Clients\\' . ucfirst($client);
         if (!class_exists($clientClass)) { // @todo: no check for ClientInterface implementation
-            throw new \Exception(""); // @todo: uhh... the exception?
+            throw new \InvalidArgumentException(
+                "Invalid HTTP client for Cyclos request. The client class '{$clientClass}' was not found."
+            );
         }
         $this->_httpClient = new $clientClass;
     }
@@ -94,12 +101,12 @@ class Client
     /**
      * Add a payload to the request.
      *
-     * @param [type] $body
+     * @param mixed $body
      * @return Client
      */
     public function withBody($body)
     {
-        $this->_httpClient->withBody();
+        $this->_httpClient->withBody($body);
         return $this;
     }
 

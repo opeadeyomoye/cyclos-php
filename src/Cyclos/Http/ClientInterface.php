@@ -5,7 +5,11 @@ namespace Cyclos\Http;
 use Cyclos\Operation;
 
 /**
- * Undocumented interface
+ * Interface ClientInterface
+ *
+ * Property and method definitions for anyone who wants to be a Cyclos client.
+ *
+ * @package Cyclos\Http
  */
 interface ClientInterface
 {
@@ -53,7 +57,7 @@ interface ClientInterface
     /**
      * Send the current request.
      *
-     * @return void
+     * @return \Cyclos\Response\Response
      */
     public function send();
 }

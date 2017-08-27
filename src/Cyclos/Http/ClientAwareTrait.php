@@ -7,7 +7,7 @@ use Cyclos\Client as CyclosClient;
 /**
  * Class ClientAwareTrait
  *
- * Provides a method to get an instance of namespace\ClientInterface.
+ * Provides a method to get an instance of \Cyclos\Client.
  *
  * @package Cyclos\Http
  */

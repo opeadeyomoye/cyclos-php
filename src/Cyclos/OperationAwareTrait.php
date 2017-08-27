@@ -2,6 +2,13 @@
 
 namespace Cyclos;
 
+/**
+ * Class OperationAwareTrait
+ *
+ * Provides methods for creating/retrieving operation objects.
+ *
+ * @package Cyclos
+ */
 trait OperationAwareTrait
 {
     /**
@@ -10,9 +17,11 @@ trait OperationAwareTrait
     protected $operation;
 
     /**
-     * Undocumented function
+     * Return a new \Cyclos\Operation object,
+     * patching in any data available.
      *
      * @param array $data
+     *
      * @return Operation
      */
     public function makeOperation($data = [])
@@ -21,6 +30,13 @@ trait OperationAwareTrait
     }
 
 
+    /**
+     * Retrieve the current class' \Cyclos\Operation object.
+     *
+     * @param array $data
+     *
+     * @return Operation
+     */
     public function getOperation($data = [])
     {
         if (!$this->operation) {

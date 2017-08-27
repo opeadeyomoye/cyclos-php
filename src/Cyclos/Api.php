@@ -3,10 +3,12 @@
 namespace Cyclos;
 
 /**
+ * Class Api
+ *
  * Essentially, this is the class containing factory methods
- * for all Cyclos API endpoints currently supported by this library.
- * 
- * For now.
+ * for all Cyclos API collections currently supported by this library.
+ *
+ * @package Cyclos
  */
 class Api
 {

@@ -4,6 +4,13 @@ namespace Cyclos\Response;
 
 use Cyclos\Operation;
 
+/**
+ * Class BaseResponse
+ *
+ * @package Cyclos\Response
+ *
+ * @todo make this class into a trait
+ */
 abstract class BaseResponse implements ResponseTypeInterface
 {
     /**
