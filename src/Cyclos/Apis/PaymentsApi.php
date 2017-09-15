@@ -19,5 +19,51 @@ class PaymentsApi
     use ClientAwareTrait;
     use OperationAwareTrait;
 
+    public function perform(array $payment, $owner = null, array $fields = [])
+    {
+        $pathSuffix = '';
+        if (!empty($fields)) {
+            foreach($fields as $field) {
+                $pathSuffix .= "&fields={$field}";
+            }
+            $pathSuffix = ltrim($pathSuffix, '&');
+        }
+        $pathSuffix = '?' . $pathSuffix;
 
+        $owner = is_null($owner) ? 'self': $owner;
+        $path = "/{$owner}/payments" . $pathSuffix;
+        $method = 'post';
+        $headers = ['Content-type' => 'application/json'];
+
+        $operation = $this->makeOperation(compact('path', 'method', 'headers'));
+        $operation->setConfig($this->getGlobalConfig());
+
+        return $this->getClient()
+            ->setOperation($operation)
+            ->withBody($payment);
+    }
+
+    public function preview(array $payment, $owner = null, array $fields = [])
+    {
+        $pathSuffix = '';
+        if (!empty($fields)) {
+            foreach($fields as $field) {
+                $pathSuffix .= "&fields={$field}";
+            }
+            $pathSuffix = ltrim($pathSuffix, '&');
+        }
+        $pathSuffix = '?' . $pathSuffix;
+
+        $owner = is_null($owner) ? 'self': $owner;
+        $path = "/{$owner}/payments/preview" . $pathSuffix;
+        $method = 'post';
+        $headers = ['Content-type' => 'application/json'];
+
+        $operation = $this->makeOperation(compact('path', 'method', 'headers'));
+        $operation->setConfig($this->getGlobalConfig());
+
+        return $this->getClient()
+            ->setOperation($operation)
+            ->withBody($payment);
+    }
 }
