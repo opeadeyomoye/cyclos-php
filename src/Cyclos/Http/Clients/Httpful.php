@@ -99,7 +99,7 @@ class Httpful extends BaseClient
         if ($this->body) {
             $body = $this->body;
             (is_string($body) && json_decode($body)) || $body = json_encode($body);
-            $this->request->body($this->body);
+            $this->request->body($body);
         }
         return $this;
     }

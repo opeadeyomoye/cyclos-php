@@ -28,9 +28,12 @@ class Api
         return new Apis\AccountsApi;
     }
 
+    /**
+     * @return Apis\PaymentsApi
+     */
     public static function getPayments()
     {
-        
+        return new Apis\PaymentsApi;
     }
 
 
