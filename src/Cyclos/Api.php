@@ -41,4 +41,12 @@ class Api
     {
 
     }
+
+    /**
+     * @return Apis\CaptchaApi
+     */
+    public static function getCaptcha()
+    {
+        return new Apis\CaptchaApi;
+    }
 }

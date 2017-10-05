@@ -85,8 +85,10 @@ class Httpful extends BaseClient
             }
         }
 
+        if (!array_key_exists('Accept', $headers)) {
+            $this->request->expects('json');
+        }
         $this->request->addHeaders($headers);
-        $this->request->expects('json');
         return $this;
     }
 
