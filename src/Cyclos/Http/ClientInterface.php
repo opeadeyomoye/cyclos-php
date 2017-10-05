@@ -60,4 +60,11 @@ interface ClientInterface
      * @return \Cyclos\Response\Response
      */
     public function send();
+
+    /**
+     * Send the current request without authorization.
+     *
+     * @return ClientInterface
+     */
+    public function withoutAuthorization();
 }
