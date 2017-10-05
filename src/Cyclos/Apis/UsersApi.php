@@ -22,8 +22,9 @@ class UsersApi
     {
         $path = '/users';
         $method = 'post';
+        $headers = ['Content-type' => 'application/json'];
 
-        $operation = $this->makeOperation(compact('path', 'method'));
+        $operation = $this->makeOperation(compact('path', 'method', 'headers'));
         $operation->setConfig($this->getGlobalConfig());
 
         return $this->getClient()->setOperation($operation)->withBody($user);
