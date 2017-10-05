@@ -152,6 +152,17 @@ class Client
         return false;
     }
 
+    /**
+     * Send the current request without authorization.
+     *
+     * @return static
+     */
+    public function withoutAuthorization()
+    {
+        $this->_httpClient->withoutAuthorization();
+        return $this;
+    }
+
     // Alias of $this->send();
     public function now()
     {

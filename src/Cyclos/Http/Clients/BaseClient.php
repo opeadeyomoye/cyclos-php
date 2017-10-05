@@ -30,6 +30,11 @@ abstract class BaseClient implements ClientInterface
      */
     protected $expectedModel;
 
+    /**
+     * @var bool Whether or not the request to be sent needs the authorization header.
+     */
+    protected $needsAuthorization = true;
+
 
     /**
      * Set the current operation.
@@ -90,11 +95,22 @@ abstract class BaseClient implements ClientInterface
      * {@inheritDoc}
      *
      * @param mixed $data
-     * @return $this
+     * @return static
      */
     public function withBody($data)
     {
         $this->body = $data;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    public function withoutAuthorization()
+    {
+        $this->needsAuthorization = false;
         return $this;
     }
 

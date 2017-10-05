@@ -66,23 +66,25 @@ class Httpful extends BaseClient
         is_array($headers) || $headers = [];
         $headers = array_merge($headers, self::USER_AGENT_HEADER);
 
-        // add authorization header
         $config = $this->operation->getConfig();
 
-        if ($config->getAccessClient()) {
-            $headers['Authorization'] = 'Bearer ' . $config->getAccessClient();
-        } elseif ($config->getSessionToken()) {
-            $headers['Session-Token'] = $config->getSessionToken();
-        } else {
-            $username = $config->getUsername();
-            $password = $config->getPassword();
-
-            if (!$username || !$password) {
-                throw new \Exception('Invalid or unset authorization for Cyclos request.');
+        if ($this->needsAuthorization === true) {
+            if ($config->getAccessClient()) {
+                $headers['Authorization'] = 'Bearer ' . $config->getAccessClient();
+            } elseif ($config->getSessionToken()) {
+                $headers['Session-Token'] = $config->getSessionToken();
             } else {
-                $headers['Authorization'] = 'Basic ' . base64_encode("{$username}:{$password}");
+                $username = $config->getUsername();
+                $password = $config->getPassword();
+
+                if (!$username || !$password) {
+                    throw new \Exception('Invalid or unset authorization for Cyclos request.');
+                } else {
+                    $headers['Authorization'] = 'Basic ' . base64_encode("{$username}:{$password}");
+                }
             }
         }
+
         $this->request->addHeaders($headers);
         $this->request->expects('json');
         return $this;
