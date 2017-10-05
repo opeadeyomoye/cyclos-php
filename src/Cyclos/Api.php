@@ -36,10 +36,12 @@ class Api
         return new Apis\PaymentsApi;
     }
 
-
+    /**
+     * @return Apis\UsersApi
+     */
     public static function getUsers()
     {
-
+        return new Apis\UsersApi;
     }
 
     /**
