@@ -51,4 +51,12 @@ class Api
     {
         return new Apis\CaptchaApi;
     }
+
+    /**
+     * @return Apis\TransactionsApi
+     */
+    public function getTransactions()
+    {
+        return new Apis\TransactionsApi;
+    }
 }
