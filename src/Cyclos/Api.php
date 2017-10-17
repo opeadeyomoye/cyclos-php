@@ -55,8 +55,13 @@ class Api
     /**
      * @return Apis\TransactionsApi
      */
-    public function getTransactions()
+    public static function getTransactions()
     {
         return new Apis\TransactionsApi;
+    }
+
+    public static function getPasswords()
+    {
+        return new Apis\PasswordsApi;
     }
 }
