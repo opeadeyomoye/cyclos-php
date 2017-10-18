@@ -63,4 +63,16 @@ class AuthApi
             ->setOperation($operation)
             ->expect(['model' => 'Auth']);
     }
+
+    public function requestForgottenPassword($data)
+    {
+        $path = "/auth/forgotten-password/request";
+        $method = 'post';
+        $headers = ['Content-type' => 'application/json'];
+
+        $operation = $this->makeOperation(compact('path', 'method', 'headers'));
+        $operation->setConfig($this->getGlobalConfig());
+
+        return $this->getClient()->setOperation($operation)->withBody($data);
+    }
 }
