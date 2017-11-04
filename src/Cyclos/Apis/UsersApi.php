@@ -50,4 +50,24 @@ class UsersApi
 
         return $this->getClient()->setOperation($operation);
     }
+
+    public function getUser($userId, array $fields = [])
+    {
+        $pathSuffix = '';
+        if (!empty($fields)) {
+            foreach($fields as $field) {
+                $pathSuffix .= "&fields={$field}";
+            }
+        }
+        $pathSuffix = ltrim($pathSuffix, '&');
+        $pathSuffix = '?' . $pathSuffix;
+
+        $path = "/users/{$userId}" . $pathSuffix;
+        $method = 'get';
+
+        $operation = $this->makeOperation(compact('path', 'method'));
+        $operation->setConfig($this->getGlobalConfig());
+
+        return $this->getClient()->setOperation($operation);
+    }
 }
